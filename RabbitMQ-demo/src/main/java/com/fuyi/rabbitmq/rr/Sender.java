@@ -37,10 +37,19 @@ public class Sender {
 		 * arguments：额外参数
 		 */
 		channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+		
+		// 公平转发，默认会轮训转发
+		int prefetchCount = 1;
+		channel.basicQos(prefetchCount);;
 
 		// 4. 发送消息
 		for(int i = 5; i < 15; i++) {
-			String msg = "Hello World :" + i ;
+			String msg = "Hello World :";
+			if(i%2 == 0) {
+				msg = msg + 3 ;
+			} else {
+				msg = msg + 10 ;
+			}
 			channel.basicPublish("", QUEUE_NAME, null, msg.getBytes());
 			System.out.println(" [x] Sent '" + msg + "'");
 		}

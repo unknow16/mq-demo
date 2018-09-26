@@ -25,6 +25,9 @@ public class Worker {
 		// 2. 通过连接创建通道
 		final Channel channel = connection.createChannel();
 		
+		int prefetchCount = 1;
+		channel.basicQos(prefetchCount);
+		
 		/**
 		 * 3. 给通道指定队列
 		 * 
